@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<launch>
+  <arg
+    name="model" />
+  <arg
+    name="gui"
+    default="False" />
+
+  <param name="kinect_robot_description" command="$(find xacro)/xacro --inorder '$(find kinect2_bridge)/urdf/kinect_v2_standalong_physical.urdf.xacro'" />
+
+  <node
+    name="kinect_tf"
+    pkg="tf"
+    type="static_transform_publisher"
+    args="1.65 0 0.965 0 0 3.141592 root kinect2_rgb_optical_frame 40" />
+
+
+  <!--node
+    name="kinect_joint_state_publisher"
+    pkg="joint_state_publisher"
+    type="joint_state_publisher">
+	<remap from="robot_description" to="kinect_robot_description" />    
+	<remap from="joint_states" to="kinect_joint_states" />
+  </node-->
+  <node
+    name="kinect_robot_state_publisher"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher">
+	<remap from="robot_description" to="kinect_robot_description" />    
+	<remap from="joint_states" to="kinect_joint_states" />     
+	<remap from="tf_prefix" to="kinect_tf_prefix" /> 
+  </node>
+
+  <!--node
+    name="kinect_rviz"
+    pkg="rviz"
+    type="rviz"
+    args="-d $(find kinect2_bridge)/urdf.rviz" >
+    <param name="use_gui" value="$(arg gui)" />
+  </node-->
+
+</launch>
